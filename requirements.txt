@@ -6,3 +6,4 @@ SQLAlchemy
 psycopg2-binary
 pymongo
 python-dotenv
+python-ulid
