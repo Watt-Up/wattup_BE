@@ -22,7 +22,7 @@ async def create_reservation(req: schemas.ReservationCreateRequest, db: Session 
 
     # 2. [중복 체크] 직접 SQL 실행 (ERD 명칭 ev_resevation 기준)
     check_query = text("""
-        SELECT 1 FROM ev_resevation 
+        SELECT 1 FROM ev_reservation 
         WHERE stat_id = :stat_id 
         AND start_dt < :end_dt 
         AND end_dt > :start_dt
@@ -40,10 +40,10 @@ async def create_reservation(req: schemas.ReservationCreateRequest, db: Session 
             detail="이미 해당 시간에 예약이 존재합니다."
         )
 
-    # 3. [데이터 저장] 직접 INSERT (ULID 생성 및 status 'READY' 고정)
+    # 3. [데이터 저장] 직접 INSERT (ULID 생성 및 status 'READY' 고정)c
     new_reserv_id = ulid.new().str
     insert_query = text("""
-        INSERT INTO ev_resevation (reserv_id, user_id, status, stat_id, start_dt, end_dt)
+        INSERT INTO ev_reservation (reserv_id, user_id, status, stat_id, start_dt, end_dt)
         VALUES (:reserv_id, :user_id, 'READY', :stat_id, :start_dt, :end_dt)
     """)
     
