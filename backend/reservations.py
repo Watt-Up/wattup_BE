@@ -123,6 +123,7 @@ async def create_reservation(req: ReservationCreateRequest, db: Session = Depend
     }).mappings().first()
 
     if conflict:
+        
         # 개발 단계에서는 충돌 예약 정보를 같이 내려주는 게 디버깅에 압도적으로 좋다.
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
