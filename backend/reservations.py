@@ -152,7 +152,7 @@ async def create_reservation(req: ReservationCreateRequest, db: Session = Depend
 
     insert_query = text("""
         INSERT INTO ev_reservation (reserv_id, user_id, status, stat_id, start_dt, end_dt)
-        VALUES (:reserv_id, :user_id, 'READY', :stat_id, :start_dt, :end_dt)
+        VALUES (:reserv_id, :user_id, 'USED', :stat_id, :start_dt, :end_dt)
     """)
 
     try:
@@ -177,8 +177,9 @@ async def create_reservation(req: ReservationCreateRequest, db: Session = Depend
     # 5) 응답
     # =========================
     return {
+        "user_id": req.user_id,
         "reserv_id": new_reserv_id,
-        "status": "READY"
+        "status": "USED" #이 부분 고쳐야됨.
     }
 
 

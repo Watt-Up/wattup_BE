@@ -177,6 +177,26 @@ services:
       kafka-1: { condition: service_started }
     restart: unless-stopped
     networks: [ev-network]
+  frontend:
+    image: soojungchoi/wattup-fe:v1.0
+    container_name: wattup-fe
+    expose:
+      - "80"          # 외부 공개 X, 내부(gw)만 접근
+    networks: [ev-network]
+    restart: unless-stopped
+
+  gateway:
+    image: nginx:alpine
+    container_name: wattup-gw
+    ports:
+      - "3000:80"     # 사용자는 무조건 3000으로 접속
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - frontend
+      - backend
+    networks: [ev-network]
+    restart: unless-stopped
 
 # ==========================================
 # 4. 볼륨 및 네트워크 정의
@@ -192,3 +212,12 @@ networks:
   ev-network:
     name: ev-network
     driver: bridge
+
+## 다른 곳에서 실행하려면?
+#backend:
+ # image: <YOUR_DOCKERHUB_ID>/wattup-backend:1.0.0
+  ## build: ...  ← 이건 제거/주석
+
+#importer:
+ # image: <YOUR_DOCKERHUB_ID>/wattup-importer:1.0.0
+  ## build: ...  ← 이건 제거/주석
