@@ -21,6 +21,7 @@ class ReservationCreateRequest(BaseModel):
     end_dt: int    # datetime에서 int로 변경 (16시 등)
 
 class ReservationCreateResponse(BaseModel):
+    user_id: str
     reserv_id: str
     status: str
 

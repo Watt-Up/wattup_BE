@@ -93,8 +93,9 @@ async def create_reservation(req: ReservationCreateRequest, db: Session = Depend
     db.commit()
 
     return {
+        "user_id": req.user_id,
         "reserv_id": new_reserv_id,
-        "status": "READY"
+        "status": "READY" 
     }
 
 
